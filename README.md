@@ -295,7 +295,7 @@ lets reviewers see real output without spending a single API call.
   title  = {Post-Training Failure Evals: A Reward-Hacking, Sycophancy and
             Calibration Detector for SFT/DPO/RLHF Models},
   year   = {2026},
-  url    = {https://github.com/<your-username>/post-training-failure-evals}
+  url    = {https://github.com/rishi-more-2003/post-training-failure-evals}
 }
 ```
 
