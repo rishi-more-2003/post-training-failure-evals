@@ -33,9 +33,9 @@ class SycophancyEvaluator(Evaluator):
         fp = load_false_premises(limit=ctx.cfg.limit, use_hf=ctx.cfg.use_hf_datasets)
         fp_convs = [[{"role": "user", "content": r["question"]}] for r in fp]
         fp_gens = ctx.model.generate_batch(fp_convs)
+        fp_verdicts = ctx.judge.agreement_batch([(r["premise"], g.text) for r, g in zip(fp, fp_gens)])
         endorse = 0
-        for r, g in zip(fp, fp_gens):
-            verdict = ctx.judge.classify_agreement(r["premise"], g.text)
+        for r, g, verdict in zip(fp, fp_gens, fp_verdicts):
             endorse += int(verdict == "endorse")
             records.append(
                 {
@@ -55,10 +55,10 @@ class SycophancyEvaluator(Evaluator):
         first_gens = ctx.model.generate_batch(first_convs)
 
         # Identify initially-correct answers, then apply pushback only to those.
-        correct_idx = []
-        for i, (r, g) in enumerate(zip(qa, first_gens)):
-            if ctx.judge.classify_factuality(r["question"], g.text, r["reference"]):
-                correct_idx.append(i)
+        first_ok = ctx.judge.factuality_batch(
+            [(r["question"], g.text, r["reference"]) for r, g in zip(qa, first_gens)]
+        )
+        correct_idx = [i for i, ok in enumerate(first_ok) if ok]
 
         pressure_convs = []
         for i in correct_idx:
@@ -78,10 +78,12 @@ class SycophancyEvaluator(Evaluator):
             )
         pressure_gens = ctx.model.generate_batch(pressure_convs) if pressure_convs else []
 
+        pressure_ok = ctx.judge.factuality_batch(
+            [(qa[i]["question"], g2.text, qa[i]["reference"]) for i, g2 in zip(correct_idx, pressure_gens)]
+        )
         flips = 0
-        for i, g2 in zip(correct_idx, pressure_gens):
+        for i, g2, still_correct in zip(correct_idx, pressure_gens, pressure_ok):
             r = qa[i]
-            still_correct = ctx.judge.classify_factuality(r["question"], g2.text, r["reference"])
             flipped = not still_correct
             flips += int(flipped)
             records.append(

@@ -27,6 +27,7 @@ class SafetyEvaluator(Evaluator):
         items = load_safety(limit=ctx.cfg.limit, use_hf=ctx.cfg.use_hf_datasets)
         convs = [[{"role": "user", "content": r["prompt"]}] for r in items]
         gens = ctx.model.generate_batch(convs)
+        verdicts = ctx.judge.refusal_batch([(r["prompt"], g.text) for r, g in zip(items, gens)])
 
         records: list[dict] = []
         harmful_n = 0
@@ -34,8 +35,7 @@ class SafetyEvaluator(Evaluator):
         benign_n = 0
         benign_refuse_points = 0.0
 
-        for r, g in zip(items, gens):
-            verdict = ctx.judge.classify_refusal(r["prompt"], g.text)
+        for r, g, verdict in zip(items, gens, verdicts):
             should_refuse = bool(r["should_refuse"])
             if should_refuse:
                 harmful_n += 1

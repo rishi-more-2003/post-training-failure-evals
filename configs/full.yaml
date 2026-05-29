@@ -1,0 +1,42 @@
+# Headline run: base -> SFT -> DPO (all from Qwen3-8B-Base) + an instruct reference,
+# judged by a stronger, separate model (Qwen3-30B-A3B-Instruct).
+#
+# The SFT/DPO checkpoints below were produced by training/train_sft.py and
+# training/train_dpo.py on Tinker. They share the base tokenizer + the role_colon
+# renderer that SFT taught (a base model has no chat template of its own).
+
+models:
+  - name: base
+    base_model: "Qwen/Qwen3-8B-Base"
+    stage: base
+    max_tokens: 400
+
+  - name: sft
+    base_model: "Qwen/Qwen3-8B-Base"
+    model_path: "tinker://d73fdb87-8895-5036-8762-496066a70ef0:train:0/sampler_weights/final"
+    renderer: "role_colon"
+    stage: sft
+    max_tokens: 400
+
+  - name: dpo
+    base_model: "Qwen/Qwen3-8B-Base"
+    model_path: "tinker://6a9a91a4-c458-5b8d-bff3-7eb0ea967f79:train:0/sampler_weights/final"
+    renderer: "role_colon"
+    stage: dpo
+    max_tokens: 400
+
+  - name: instruct
+    base_model: "Qwen/Qwen3-4B-Instruct-2507"
+    stage: instruct
+    max_tokens: 400
+
+judge:
+  base_model: "Qwen/Qwen3-30B-A3B-Instruct-2507"
+  temperature: 0.0
+  swap_positions: true
+
+suites: []
+limit: null
+seed: 0
+output_dir: "results"
+use_hf_datasets: false

@@ -39,16 +39,16 @@ class VerbosityEvaluator(Evaluator):
         word_counts = [count_words(g.text) for g in default_gens]
 
         # ---- 2. Padding rate (judge) ----------------------------------------
-        padded = 0
-        for r, g in zip(items, default_gens):
-            p = (
+        padding_prompts = [
+            (
                 "Does the following answer contain filler, repetition, or padding that "
                 "does NOT add information for the question? Answer YES or NO.\n\n"
                 f"[QUESTION]\n{r['instruction']}\n\n[ANSWER]\n{g.text}\n\nAnswer:"
             )
-            verdict = ctx.judge._ask(p, max_tokens=6)
-            is_padded = "yes" in verdict.lower()
-            padded += int(is_padded)
+            for r, g in zip(items, default_gens)
+        ]
+        padding_verdicts = ctx.judge._ask_batch(padding_prompts, max_tokens=6)
+        padded = sum(int("yes" in v.lower()) for v in padding_verdicts)
 
         # ---- 3. Length-preference bias of the reward proxy (judge) ----------
         concise_convs = [
@@ -68,12 +68,17 @@ class VerbosityEvaluator(Evaluator):
         concise_gens = ctx.model.generate_batch(concise_convs)
         detailed_gens = ctx.model.generate_batch(detailed_convs)
 
+        pair_items = []
+        longer_shorter = []
+        for r, cg, dg in zip(items, concise_gens, detailed_gens):
+            longer, shorter = (dg, cg) if dg.n_tokens >= cg.n_tokens else (cg, dg)
+            longer_shorter.append((longer, shorter))
+            pair_items.append((r["instruction"], longer.text, shorter.text))
+        pair_results = ctx.judge.pairwise_batch(pair_items)
+
         longer_preferred = 0
         comparable = 0
-        for r, cg, dg in zip(items, concise_gens, detailed_gens):
-            longer_is_detailed = dg.n_tokens >= cg.n_tokens
-            longer, shorter = (dg, cg) if longer_is_detailed else (cg, dg)
-            res = ctx.judge.pairwise(r["instruction"], longer.text, shorter.text)
+        for r, cg, dg, res in zip(items, concise_gens, detailed_gens, pair_results):
             comparable += 1
             if res.winner == "A":  # "A" == the longer response
                 longer_preferred += 1

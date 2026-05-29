@@ -54,7 +54,7 @@ def main() -> None:
     load_dotenv()
     args = parse_args()
 
-    from tinker_cookbook import checkpoint_utils
+    from tinker_cookbook import checkpoint_utils, cli_utils
     from tinker_cookbook.preference import train_dpo
     from tinker_cookbook.recipes.preference.dpo.train import get_dataset_builder
 
@@ -66,6 +66,7 @@ def main() -> None:
     stamp = datetime.now().strftime("%Y%m%d-%H%M")
     safe = args.model_name.replace("/", "-")
     log_path = args.log_path or f"results/training/dpo-{safe}-{stamp}"
+    cli_utils.check_log_dir(log_path, behavior_if_exists="overwrite")
 
     config = train_dpo.Config(
         log_path=log_path,
@@ -81,7 +82,6 @@ def main() -> None:
         dpo_beta=args.dpo_beta,
         reference_model_name=args.reference_model_name,
         max_steps=args.max_steps,
-        behavior_if_log_dir_exists="overwrite",
     )
     print(f"[DPO] model={args.model_name} beta={args.dpo_beta} renderer={renderer_name} -> {log_path}")
     train_dpo.main(config)

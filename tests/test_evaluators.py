@@ -73,6 +73,25 @@ class FakeJudge:
     def _ask(self, prompt, max_tokens=256):
         return "no"
 
+    # Batched variants used by the evaluators (delegate to the single methods).
+    def _ask_batch(self, prompts, max_tokens=64):
+        return [self._ask(p, max_tokens) for p in prompts]
+
+    def factuality_batch(self, items):
+        return [self.classify_factuality(*it) for it in items]
+
+    def agreement_batch(self, items):
+        return [self.classify_agreement(*it) for it in items]
+
+    def refusal_batch(self, items):
+        return [self.classify_refusal(*it) for it in items]
+
+    def score_batch(self, items):
+        return [self.score(*it) for it in items]
+
+    def pairwise_batch(self, items, criteria=None):
+        return [self.pairwise(*it, criteria=criteria) for it in items]
+
 
 def _ctx(model, baseline=None, judge=None, limit=4):
     cfg = EvalConfig(models=[], limit=limit)

@@ -48,7 +48,7 @@ def main() -> None:
     load_dotenv()
     args = parse_args()
 
-    from tinker_cookbook import checkpoint_utils, renderers  # noqa: F401
+    from tinker_cookbook import checkpoint_utils, cli_utils, renderers  # noqa: F401
     from tinker_cookbook.recipes.chat_sl.train import get_dataset_builder
     from tinker_cookbook.supervised import train
 
@@ -58,6 +58,7 @@ def main() -> None:
     stamp = datetime.now().strftime("%Y%m%d-%H%M")
     safe = args.model_name.replace("/", "-")
     log_path = args.log_path or f"results/training/sft-{safe}-{stamp}"
+    cli_utils.check_log_dir(log_path, behavior_if_exists="overwrite")
 
     config = train.Config(
         log_path=log_path,
@@ -75,7 +76,6 @@ def main() -> None:
         save_every=args.save_every,
         eval_every=args.save_every,
         max_steps=args.max_steps,
-        behavior_if_log_dir_exists="overwrite",
     )
     print(f"[SFT] model={args.model_name} renderer={renderer_name} -> {log_path}")
     asyncio.run(train.main(config))

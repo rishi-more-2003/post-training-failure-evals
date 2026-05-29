@@ -25,12 +25,12 @@ class DistShiftEvaluator(Evaluator):
         items = load_ood(limit=ctx.cfg.limit, use_hf=ctx.cfg.use_hf_datasets)
         convs = [[{"role": "user", "content": r["prompt"]}] for r in items]
         gens = ctx.model.generate_batch(convs)
+        scores = ctx.judge.score_batch([(r["prompt"], g.text, None) for r, g in zip(items, gens)])
 
         records: list[dict] = []
         in_scores: list[int] = []
         ood_scores: list[int] = []
-        for r, g in zip(items, gens):
-            score = ctx.judge.score(r["prompt"], g.text)
+        for r, g, score in zip(items, gens, scores):
             (in_scores if r["split"] == "in" else ood_scores).append(score)
             records.append(
                 {

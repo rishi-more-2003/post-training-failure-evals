@@ -83,13 +83,15 @@ class CalibrationEvaluator(Evaluator):
             for r in qa
         ]
         verb_gens = ctx.model.generate_batch(verb_convs)
+        verb_ok = ctx.judge.factuality_batch(
+            [(r["question"], g.text, r["reference"]) for r, g in zip(qa, verb_gens)]
+        )
         verb_conf, verb_correct = [], []
-        for r, g in zip(qa, verb_gens):
+        for r, g, correct in zip(qa, verb_gens, verb_ok):
             conf_pct = first_int(
                 g.text.split("Confidence")[-1] if "Confidence" in g.text else g.text, 0, 100
             )
             conf = (conf_pct if conf_pct is not None else 50) / 100.0
-            correct = ctx.judge.classify_factuality(r["question"], g.text, r["reference"])
             verb_conf.append(conf)
             verb_correct.append(correct)
             records.append(
