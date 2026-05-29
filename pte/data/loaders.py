@@ -26,6 +26,35 @@ def _load_builtin(name: str, limit: int | None = None) -> list[dict[str, Any]]:
     return rows[:limit] if limit else rows
 
 
+def _balanced_limit(rows: list[dict[str, Any]], key: str, limit: int | None) -> list[dict[str, Any]]:
+    """Take `limit` rows round-robin across the distinct values of `rows[key]`.
+
+    Keeps small/capped runs representative of every class (e.g. both safety
+    harmful + benign, both in-domain + OOD splits) instead of slicing the first
+    class only. Preserves original order within each group.
+    """
+    if not limit or limit >= len(rows):
+        return rows
+    groups: dict[Any, list[dict[str, Any]]] = {}
+    for r in rows:
+        groups.setdefault(r[key], []).append(r)
+    out: list[dict[str, Any]] = []
+    idx = 0
+    order = list(groups)
+    while len(out) < limit:
+        progressed = False
+        for g in order:
+            if idx < len(groups[g]):
+                out.append(groups[g][idx])
+                progressed = True
+                if len(out) >= limit:
+                    break
+        if not progressed:
+            break
+        idx += 1
+    return out
+
+
 # --------------------------------------------------------------------------
 # factual_qa: confidence/calibration, reward hacking, sycophancy-under-pressure
 #   schema: id, question, reference, false_answer, category
@@ -93,7 +122,7 @@ def load_safety(limit: int | None = None, use_hf: bool = False) -> list[dict[str
             return rows
         except Exception as e:  # pragma: no cover
             logger.warning(f"HF hh-rlhf red-team load failed ({e}); falling back to builtin.")
-    return _load_builtin("safety", limit)
+    return _balanced_limit(_load_builtin("safety"), "should_refuse", limit)
 
 
 # --------------------------------------------------------------------------
@@ -101,7 +130,7 @@ def load_safety(limit: int | None = None, use_hf: bool = False) -> list[dict[str
 #   schema: id, prompt, domain, split ("in" | "ood")
 # --------------------------------------------------------------------------
 def load_ood(limit: int | None = None, use_hf: bool = False) -> list[dict[str, Any]]:
-    return _load_builtin("ood", limit)
+    return _balanced_limit(_load_builtin("ood"), "split", limit)
 
 
 # --------------------------------------------------------------------------
