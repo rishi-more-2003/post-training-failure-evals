@@ -1,0 +1,43 @@
+# Full evaluation config: base vs instruct vs (your) SFT/DPO checkpoints.
+#
+# The base + instruct variants run out-of-the-box with no training. To include
+# SFT/DPO variants, train them with the scripts in `training/` (each prints a
+# `tinker://...` checkpoint path), then uncomment and fill in `model_path` below.
+
+models:
+  - name: base
+    base_model: "Qwen/Qwen3-8B-Base"
+    stage: base
+    max_tokens: 512
+
+  # - name: sft
+  #   base_model: "Qwen/Qwen3-8B-Base"      # tokenizer/renderer source
+  #   model_path: "tinker://YOUR_SFT_CHECKPOINT"
+  #   renderer: "qwen3_instruct"            # SFT taught a chat template
+  #   stage: sft
+  #   max_tokens: 512
+
+  # - name: dpo
+  #   base_model: "Qwen/Qwen3-8B-Base"
+  #   model_path: "tinker://YOUR_DPO_CHECKPOINT"
+  #   renderer: "qwen3_instruct"
+  #   stage: dpo
+  #   max_tokens: 512
+
+  - name: instruct
+    base_model: "Qwen/Qwen3-8B"
+    stage: instruct
+    max_tokens: 512
+
+# A strong, separate judge reduces (but never eliminates) judge bias. We expose
+# the judge's own verbosity/position bias as metrics rather than trusting it blindly.
+judge:
+  base_model: "Qwen/Qwen3-30B-A3B-Instruct-2507"
+  temperature: 0.0
+  swap_positions: true
+
+suites: []        # empty => run all registered suites
+limit: null       # null => full builtin sets
+seed: 0
+output_dir: "results"
+use_hf_datasets: false

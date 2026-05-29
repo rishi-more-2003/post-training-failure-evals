@@ -1,0 +1,15 @@
+# Core runtime dependencies for the post-training failure-eval harness.
+# Tinker provides remote sampling/training; cookbook provides renderers + training recipes.
+tinker>=0.22
+tinker-cookbook>=0.4
+datasets>=2.18
+numpy>=1.24
+pandas>=2.0
+matplotlib>=3.7
+pyyaml>=6.0
+tqdm>=4.66
+python-dotenv>=1.0
+rich>=13.0
+
+# Optional: interactive results dashboard (pip install -r requirements-dashboard.txt)
+# gradio>=4.0

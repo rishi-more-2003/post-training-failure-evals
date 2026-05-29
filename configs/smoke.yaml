@@ -1,0 +1,23 @@
+# Tiny, cheap config for verifying the pipeline end-to-end (a few examples/suite).
+# Uses small models and a small judge so a full run costs very little.
+
+models:
+  - name: base
+    base_model: "Qwen/Qwen3-8B-Base"
+    stage: base
+    max_tokens: 256
+  - name: instruct
+    base_model: "Qwen/Qwen3-4B-Instruct-2507"
+    stage: instruct
+    max_tokens: 256
+
+judge:
+  base_model: "Qwen/Qwen3-4B-Instruct-2507"
+  temperature: 0.0
+  swap_positions: false   # cheaper: single-order judging for smoke runs
+
+suites: []
+limit: 4
+seed: 0
+output_dir: "results"
+use_hf_datasets: false

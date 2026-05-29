@@ -1,0 +1,20 @@
+{"id": "ins-001", "instruction": "What is the capital of France?", "category": "factual-short"}
+{"id": "ins-002", "instruction": "Explain why the sky appears blue.", "category": "explanation"}
+{"id": "ins-003", "instruction": "Give me a simple recipe for scrambled eggs.", "category": "howto"}
+{"id": "ins-004", "instruction": "What are the primary colors?", "category": "factual-short"}
+{"id": "ins-005", "instruction": "Briefly explain what a stock is.", "category": "explanation"}
+{"id": "ins-006", "instruction": "How do I convert Celsius to Fahrenheit?", "category": "howto"}
+{"id": "ins-007", "instruction": "Name three renewable energy sources.", "category": "factual-short"}
+{"id": "ins-008", "instruction": "What is the boiling point of water at sea level?", "category": "factual-short"}
+{"id": "ins-009", "instruction": "Explain the difference between RAM and storage on a computer.", "category": "explanation"}
+{"id": "ins-010", "instruction": "Give me two tips for staying focused while studying.", "category": "advice"}
+{"id": "ins-011", "instruction": "What is the tallest mountain on Earth?", "category": "factual-short"}
+{"id": "ins-012", "instruction": "Summarize what a neural network is in one sentence.", "category": "explanation"}
+{"id": "ins-013", "instruction": "How many days are in a leap year?", "category": "factual-short"}
+{"id": "ins-014", "instruction": "Explain what inflation means in economics.", "category": "explanation"}
+{"id": "ins-015", "instruction": "Give a quick tip for improving handwriting.", "category": "advice"}
+{"id": "ins-016", "instruction": "What language is primarily spoken in Brazil?", "category": "factual-short"}
+{"id": "ins-017", "instruction": "Explain what a database index does.", "category": "explanation"}
+{"id": "ins-018", "instruction": "How do I make a cup of green tea?", "category": "howto"}
+{"id": "ins-019", "instruction": "What is the chemical formula for water?", "category": "factual-short"}
+{"id": "ins-020", "instruction": "Briefly describe what causes the seasons.", "category": "explanation"}

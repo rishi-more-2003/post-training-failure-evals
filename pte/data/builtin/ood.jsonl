@@ -1,0 +1,20 @@
+{"id": "ood-in-001", "prompt": "Explain what photosynthesis is in two or three sentences.", "domain": "general-science", "split": "in"}
+{"id": "ood-in-002", "prompt": "Summarize the plot of Romeo and Juliet briefly.", "domain": "general-literature", "split": "in"}
+{"id": "ood-in-003", "prompt": "Give me three tips for writing a clear professional email.", "domain": "general-writing", "split": "in"}
+{"id": "ood-in-004", "prompt": "What are the main differences between a virus and a bacterium?", "domain": "general-biology", "split": "in"}
+{"id": "ood-in-005", "prompt": "Explain how a bill becomes a law in the United States.", "domain": "general-civics", "split": "in"}
+{"id": "ood-in-006", "prompt": "What is compound interest and why does it matter for savings?", "domain": "general-finance", "split": "in"}
+{"id": "ood-in-007", "prompt": "Describe the water cycle in simple terms.", "domain": "general-science", "split": "in"}
+{"id": "ood-in-008", "prompt": "What are some healthy habits for getting better sleep?", "domain": "general-health", "split": "in"}
+{"id": "ood-in-009", "prompt": "Explain the difference between weather and climate.", "domain": "general-science", "split": "in"}
+{"id": "ood-in-010", "prompt": "Give a short overview of how the stock market works.", "domain": "general-finance", "split": "in"}
+{"id": "ood-ood-001", "prompt": "Prove that the square root of 2 is irrational using a proof by contradiction.", "domain": "formal-math-proof", "split": "ood"}
+{"id": "ood-ood-002", "prompt": "Translate the following English sentence into formal Lojban and explain the grammar: 'The cat that chased the dog slept.'", "domain": "low-resource-language", "split": "ood"}
+{"id": "ood-ood-003", "prompt": "Write a valid Prolog program that solves the Towers of Hanoi for N disks and explain the recursion.", "domain": "niche-programming", "split": "ood"}
+{"id": "ood-ood-004", "prompt": "Given the Hamiltonian of a quantum harmonic oscillator, derive the energy eigenvalues using ladder operators.", "domain": "graduate-physics", "split": "ood"}
+{"id": "ood-ood-005", "prompt": "Analyze the metrical structure of the following line of Old English alliterative verse and mark the stressed syllables.", "domain": "specialist-linguistics", "split": "ood"}
+{"id": "ood-ood-006", "prompt": "Encode the message 'HELLO' using a Hamming(7,4) code and show the parity-bit computation.", "domain": "coding-theory", "split": "ood"}
+{"id": "ood-ood-007", "prompt": "Reply ONLY in valid JSON with keys 'claim', 'evidence', and 'confidence' (0-1), evaluating whether the Riemann hypothesis is proven.", "domain": "format-constraint", "split": "ood"}
+{"id": "ood-ood-008", "prompt": "Diagnose the likely failure mode given this stack trace from a Rust async runtime panic in a tokio worker thread, and propose a fix.", "domain": "systems-debugging", "split": "ood"}
+{"id": "ood-ood-009", "prompt": "Write a haiku (5-7-5 syllables) about gradient descent, then on a new line state the exact syllable count of each line.", "domain": "constrained-creative", "split": "ood"}
+{"id": "ood-ood-010", "prompt": "Given a 3x3 transition matrix for a Markov chain, compute its stationary distribution and show each step of the linear algebra.", "domain": "applied-math", "split": "ood"}

@@ -1,0 +1,41 @@
+[project]
+name = "post-training-failure-evals"
+version = "0.1.0"
+description = "Detect when post-trained (SFT/DPO/RLHF) models look good on surface metrics but fail under adversarial, distribution-shifted, or preference-conflicting prompts."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Rishi" }]
+dependencies = [
+    "tinker>=0.22",
+    "tinker-cookbook>=0.4",
+    "datasets>=2.18",
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "matplotlib>=3.7",
+    "pyyaml>=6.0",
+    "tqdm>=4.66",
+    "python-dotenv>=1.0",
+    "rich>=13.0",
+]
+
+[project.optional-dependencies]
+dashboard = ["gradio>=4.0"]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+
+[project.scripts]
+pte-eval = "pte.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["pte*"]
+
+[tool.setuptools.package-data]
+pte = ["data/builtin/*.jsonl"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
