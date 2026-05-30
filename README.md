@@ -129,13 +129,6 @@ results/<run_id>/
 └── raw/<model>__<suite>.jsonl   # per-example receipts
 ```
 
-Browse a run interactively, or auto-draft resume bullets from the numbers:
-
-```bash
-pip install gradio && python scripts/dashboard.py --run results/<run_id>
-python scripts/resume_bullets.py --latest
-```
-
 ---
 
 ## 🏋️ Train the variants: base → SFT → DPO
@@ -255,7 +248,7 @@ pte/
   cli.py           # `pte-eval` entrypoint
 training/          # SFT + DPO scripts (Tinker Cookbook) to produce the variants
 configs/           # full.yaml (trained 4-variant) · eval.yaml (template) · smoke.yaml (cheap)
-scripts/           # Gradio dashboard · resume-bullet generator
+scripts/           # Gradio dashboard 
 tests/             # 28 offline tests (metrics, data schema, evaluator logic)
 docs/example_run/  # a committed real run (report + plots) for instant preview
 ```
