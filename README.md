@@ -10,7 +10,7 @@
 <img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-ee4c2c.svg?logo=pytorch&logoColor=white">
 <img alt="Hugging Face" src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-datasets-yellow.svg">
 <img alt="Tinker" src="https://img.shields.io/badge/Tinker-training%20%2B%20inference-black.svg">
-<img alt="tests" src="https://img.shields.io/badge/tests-28%20passing-brightgreen.svg">
+<a href="https://github.com/rishi-more-2003/post-training-failure-evals/actions/workflows/tests.yml"><img alt="tests" src="https://github.com/rishi-more-2003/post-training-failure-evals/actions/workflows/tests.yml/badge.svg"></a>
 <img alt="license" src="https://img.shields.io/badge/license-MIT-green.svg">
 </p>
 
